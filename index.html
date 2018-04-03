@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			html,
+			body {
+				font-family: Arial, sans-serif;
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+
+			#map {
+				height: 100%;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="map"></div>
+
+		<script>
+			var map;
+
+			var markers = [];
+
+			function initMap() {
+				//constructor creates a new map - only center and zoom are requred.
+				map = new google.maps.Map(document.getElementById('map'), {
+					center: {lat: 36.0827366, lng: -115.1110119},
+					zoom: 11
+				});
+				
+				//marker locations
+				var locations = [
+					{title: "Work Locaiton", location: {lat: 36.159521, lng: -115.3236616}},
+					{title: "Home", location: {lat: 35.987527, lng: -114.978375}},
+					{title: "Mandalay Bay", location: {lat: 36.092325, lng: -115.174344}},
+					{title: "T-Mobile Arena", location: {lat: 36.102898, lng: -115.178425}},
+					{title: "Paris Hotel", location: {lat: 36.112422, lng: -115.171678}},
+					{title: "Caesars Palace", location: {lat: 36.116987, lng: -115.175125}},
+					{title: "Stratosphere", location: {lat: 36.14752, lng: -115.155908}}
+					];
+
+				var largeInfowindow = new google.maps.InfoWindow();
+				var bounds = new google.maps.LatLngBounds();
+				for (var i = 0; i < locations.length; i++) {
+					var position = locations[i].location;
+					var title = locations[i].title;
+					var marker = new google.maps.Marker({
+						map: map,
+						position: position,
+						title: title,
+						animation: google.maps.Animation.DROP,
+						id: i
+					});
+					markers.push(marker);
+					bounds.extend(marker.position);
+					marker.addListener('click', function() {
+						populateInfoWindow(this, largeInfowindow);
+					});
+				}
+				map.fitBounds(bounds);
+
+			}
+			function populateInfoWindow(marker, infowindow) {
+				if (infowindow.marker !=marker) {
+					infowindow.marker = marker;
+					infowindow.setContent('<div>' + marker.title + '</div>');
+					infowindow.open(map, marker);
+					infowindow.addListener('closeclick',function(){
+						infowindow.setMarker(null);
+					});
+					var streetViewService = new google.maps.StreetViewService();
+					var radius = 50;
+
+					function getStreetView(data, status) {
+						if (status == google.maps.StreetViewStatus.OK) {
+							var nearStreetViewLocation = data.location.latLng;
+							var heading = google.maps.geometry.spherical.computeHeading(
+								nearStreetViewLocation, marker.position);
+								infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+								var panoramaOptions = {
+									position: nearStreetViewLocation,
+									pov: {
+										heading: heading,
+										pitch: 30
+									}
+								};
+							var panorama = new google.maps.StreetViewPanorama(
+								document.getElementById('pano'), panoramaOptions);
+						} else {
+							infowindow.setContent('div' + marker.title + '</div>' +
+								'<div>No Street View Found</div>');
+						}
+					}
+					streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+					infowindow.open(map, marker);
+				}
+			}
+		</script>
+
+		<script async defer
+			src="https://maps.googleapis.com/maps/api/js?libraries=geometry&key=AIzaSyCSdGUm5yjbrlRlObfBxTkj10fTao5GGjg&v=3&callback=initMap">
+
+		</script>
+	</body>
+</html>
