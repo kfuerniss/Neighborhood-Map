@@ -11,12 +11,36 @@
 			}
 
 			#map {
+				bottom:0px;
 				height: 100%;
+				left: 362px;
+				position: absolute;
+				right: 0px;
+			}
+
+			.options-box {
+				background: #fff;
+				border: 1px solid #999;
+				border-radius: 3px;
+				height: 100%;
+				line-height: 35px;
+				padding: 10px 10px 30px 10px;
+				text-align: left;
+				width: 340px;
 			}
 		</style>
 	</head>
 	<body>
-		<div id="map"></div>
+		<div class="container">
+			<div class="options-box">
+				<h1>Las Vegas Casinos</h1>
+				<div>
+					<input id="show-casinos" type="button" value="Show Casinos">
+					<input id="hide-casinos" type="button" value="Hide Casinos">
+				</div>
+			</div>
+			<div id="map"></div>
+		</div>
 
 		<script>
 			var map;
@@ -32,8 +56,6 @@
 				
 				//marker locations
 				var locations = [
-					{title: "Work Locaiton", location: {lat: 36.159521, lng: -115.3236616}},
-					{title: "Home", location: {lat: 35.987527, lng: -114.978375}},
 					{title: "Mandalay Bay", location: {lat: 36.092325, lng: -115.174344}},
 					{title: "T-Mobile Arena", location: {lat: 36.102898, lng: -115.178425}},
 					{title: "Paris Hotel", location: {lat: 36.112422, lng: -115.171678}},
@@ -42,6 +64,8 @@
 					];
 
 				var largeInfowindow = new google.maps.InfoWindow();
+				var defaultIcon = makeMarkerIcon('0091ff');
+				var highlightedIcon = makeMarkerIcon('FFFF24');
 				var bounds = new google.maps.LatLngBounds();
 				for (var i = 0; i < locations.length; i++) {
 					var position = locations[i].location;
@@ -50,6 +74,7 @@
 						map: map,
 						position: position,
 						title: title,
+						icon: defaultIcon,
 						animation: google.maps.Animation.DROP,
 						id: i
 					});
@@ -58,8 +83,17 @@
 					marker.addListener('click', function() {
 						populateInfoWindow(this, largeInfowindow);
 					});
+					marker.addListener('mouseover', function() {
+						this.setIcon(highlightedIcon);
+					});
+					marker.addListener('mouseout', function() {
+						this.setIcon(defaultIcon);
+					});
 				}
 				map.fitBounds(bounds);
+
+				document.getElementById('show-casinos').addEventListener('click', showCasinos);
+				document.getElementById('hide-casinos').addEventListener('click', hideCasinos);
 
 			}
 			function populateInfoWindow(marker, infowindow) {
@@ -96,6 +130,30 @@
 					streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
 					infowindow.open(map, marker);
 				}
+			}
+			function showCasinos() {
+				var bounds = new google.maps.LatLngBounds();
+				for (var i = 0; i < markers.length; i++) {
+					markers[i].setMap(map);
+					bounds.extend(markers[i].position);
+				}
+				map.fitBounds(bounds);
+			}
+
+			function hideCasinos() {
+				for (var i = 0; i < markers.length; i++) {
+					markers[i].setMap(null);
+				}
+			}
+			function makeMarkerIcon(markerColor) {
+				var markerImage = new google.maps.MarkerImage(
+					'http://chart.googleapis.com/chart?chst=d_map_spin&chld=1.15|0|'+ markerColor +
+					'|40|_|%E2%80%A2',
+					new google.maps.Size(21, 34),
+					new google.maps.Point(0, 0),
+					new google.maps.Point(10, 34),
+					new google.maps.Size(21, 34));
+				return markerImage;
 			}
 		</script>
 
