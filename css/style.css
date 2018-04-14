@@ -8,14 +8,27 @@ body {
 #map {
 	bottom:0px;
 	height: 100%;
-	left: 362px;
+	left: 0%;
 	position: absolute;
 	right: 0px;
 }
 
 .map-info-window {
-	width: 500px;
-	height:500px;
+	width: 200px;
+	height: 200px;
+}
+
+.closebutton {
+	width: 10px;
+	height: 10px;
+
+}
+
+#map .main {
+	transition: margin-left .5s;
+	padding: 16px;
+	position: relative;
+	Left: 50px;
 }
 
 .container {
@@ -25,22 +38,13 @@ body {
     z-index: 1;
     top: 0;
     left: 0;
-    background-color: #111;
+    background-color: blue;
     overflow-x: hidden;
     transition: 0.5s;
-    padding-top: 60px;
+    padding-top: 10px;
 }
 
-.container .header {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
-    display: block;
-    transition: 0.3s;
-}
-
-.container .closebutton {
+#sidebar .closebutton {
     position: absolute;
     top: 0;
     right: 25px;
