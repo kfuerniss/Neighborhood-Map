@@ -6,12 +6,12 @@
 	<body>
 		<div id="sidebar" class="container"
 			<button class="closebutton" onclick="sidebarClose()">&#9776;</button>
-			<h1 class="header">Las Vegas Casinos</h1>
-		</div>	
-		<span style="font-size: 25px" onclick="sidebarOpen()">&#9776;</span>
-
-		<div id="map"></div>
-		
+			<h1>Las Vegas Casinos</h1>
+		</div>
+		<div id="map" class="main">
+			<span style="font-size: 25px" onclick="sidebarOpen()">&#9776;</span>
+		</div>
+				
 		<script>
 			var map;
 
@@ -111,13 +111,13 @@
 				return markerImage;
 			}
 			function sidebarOpen() {
-				document.getElementById("sidebar").style.display = "20%";				
+				document.getElementById("sidebar").style.width = "250px";
+				document.getElementById("map").style.marginLeft = "250px";				
 			}
 			function sidebarClose() {
-				document.getElementById("sidebar").style.display = "0%";
+				document.getElementById("sidebar").style.width = "0";
 			}
 		</script>
-
 		<script async defer
 			src="https://maps.googleapis.com/maps/api/js?libraries=drawing,geometry&key=AIzaSyCSdGUm5yjbrlRlObfBxTkj10fTao5GGjg&v=3&callback=initMap">
 
