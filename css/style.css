@@ -18,22 +18,21 @@ body {
 	height: 200px;
 }
 
-.closebutton {
-	width: 10px;
-	height: 10px;
 
-}
 
-#map .main {
+.main {
 	transition: margin-left .5s;
-	padding: 16px;
-	position: relative;
+	padding: 5px;
+	position: absolute;
+	z-index: 5;
 	Left: 50px;
+	top: 10%;
+	font-size: 40px;
 }
 
 .container {
     height: 100%;
-    width: 0;
+    width: 0%;
     position: fixed;
     z-index: 1;
     top: 0;
@@ -46,10 +45,11 @@ body {
 
 #sidebar .closebutton {
     position: absolute;
-    top: 0;
+    top: 5%;
+    z-index: 10;
     right: 25px;
     font-size: 36px;
-    margin-left: 50px;
+    margin-left: 5px;
 }
 
 @media screen and (max-height: 450px) {
