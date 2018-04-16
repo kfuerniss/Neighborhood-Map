@@ -38,34 +38,36 @@ body {
     z-index: 10;
     top: 0;
     left: 0;
-    background-color: blue;
+    background-color: #111;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 10px;
 }
 
-#sidebar a {
+.container a {
 	padding: 8px 8px 8px 32px;
     text-decoration: none;
-    font-size: 25px;
-    color: #818181;
+    color: white;
     display: block;
     transition: 0.3s;
+    font-size: 25px;
 }
 
-#sidebar a:hover {
-	color: #f1f1f1;
+.container a:hover {
+	color: #ffffff;
 }
 
-#sidebar a {
+.container .closebutton {
     position: absolute;
-    top: 5%;
+    font-size: 20px;
+    top: 0;
     right: 25px;
     font-size: 36px;
-    margin-left: 5px;
+    margin-right: 50px;
+    color: white;
 }
 
 @media screen and (max-height: 450px) {
   .container {padding-top: 15px;}
-  #sidebar a {font-size: 18px;}
+  #sidebar a {font-size: 25px;}
 }
