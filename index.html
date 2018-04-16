@@ -5,7 +5,7 @@
 	</head>
 	<body>
 		<div id="sidebar" class="container"
-			<button class="closebutton" onclick="sidebarClose()">&#9776;</button>
+			<a href="javascript:void(0)" class="closebutton" onclick="sidebarClose()">&times;</a>
 			<h1>Las Vegas Casinos</h1>
 		</div>
         <span class="main" onclick="sidebarOpen()">&#9776;</span>
@@ -111,8 +111,8 @@
 				return markerImage;
 			}
 			function sidebarOpen() {
-				document.getElementById("sidebar").style.width = "250px";
-				document.getElementById("map").style.marginLeft = "250px";				
+				document.getElementById("sidebar").style.width = "300px";
+				document.getElementById("map").style.marginLeft = "300px";				
 			}
 			function sidebarClose() {
 				document.getElementById("sidebar").style.width = "0";
