@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" href="css/style.css" >
+		<link rel="stylesheet" type="text/css" href="css/style.css" >
 	</head>
 	<body>
-		<div id="sidebar" class="container"
-			<a href="javascript:void(0)" class="closebutton" onclick="sidebarClose()">&times;Close</a>
-			<a>Las Vegas Casinos</a>
-		</div>
-        <span class="main" onclick="sidebarOpen()">&#9776;</span>
+		<button id="hide-unhide" onclick="hideUnhide()">"Hide/Unhide"</button>
+		<div id="container" class="containerBox">
+			<div id="sidebar" class="locationSidebar">
+				<h1>Las Vegas Casinos</h1>
+				<input type="text" placeholder="Search...">
+				<hr>	
+			</div>
+		</div>	
 		<div id="map">
 		</div>
 				
@@ -110,13 +113,17 @@
 					new google.maps.Size(21, 34));
 				return markerImage;
 			}
-			function sidebarOpen() {
-				document.getElementById("sidebar").style.width = "300px";
-				document.getElementById("map").style.marginLeft = "300px";				
-			}
-			function sidebarClose() {
-				document.getElementById("sidebar").style.width = "0";
-				document.getElementById("map").style.marginLeft = "0";
+			this.hideUnhide = function() {
+				var stuff = document.getElementById("sidebar");
+				var item = document.getElementById("container")
+				if (stuff.style.display === "none") {
+					stuff.style.display = "block";
+					item.style.display = "block";
+				}
+				else {
+					stuff.style.display = "none";
+					item.style.display = "none";
+				}
 			}
 		</script>
 		<script async defer
