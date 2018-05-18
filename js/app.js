@@ -119,10 +119,9 @@ this.hideUnhide = function() {
 
 var viewModel = function() {
 	this.casinosList = ko.observableArray([]);
-	initMap();
-
+	
 	for (var i= 0; i < casinos.length; i++) {
-		var title = locations[i].title;
+		var title = casinos[i].title;
 		this.casinosList.push(title);
 	}
 }
