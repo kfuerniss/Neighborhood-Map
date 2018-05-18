@@ -16,6 +16,7 @@ var casinos = [
 	{title: "Rio", location: {lat: 36.116012, lng: -115.187810}},
 	{title: "The Orleans", location: {lat: 36.101018, lng: -115.201611}}
 ];
+var largeInfowindow;
 
 function initMap() {
 	//constructor creates a new map - only center and zoom are requred.
@@ -39,10 +40,10 @@ function initMap() {
 			animation: google.maps.Animation.DROP,
 			id: i
 		});
-		markers.push(marker);
+		
 		bounds.extend(marker.position);
 		marker.addListener('click', function() {
-			populateInfoWindow(this, largeInfowindow);
+			populateInfoWindow(this);
 		});
 		marker.addListener('mouseover', function() {
 			this.setIcon(highlightedIcon);
@@ -50,19 +51,20 @@ function initMap() {
 		marker.addListener('mouseout', function() {
 			this.setIcon(defaultIcon);
 		});
+		casinos[i].marker = marker;
 	}
 	map.fitBounds(bounds);
 }
 
-function populateInfoWindow(marker, infowindow) {
+function populateInfoWindow(marker) {
 	//populates the info window
-	if (infowindow.marker !=marker) {
-		infowindow.marker = marker;
-		infowindow.setContent('<div>' + marker.title + '</div>');
-		infowindow.open(map, marker);
-		infowindow.addListener('closeclick',function(){
-			infowindow.marker = null;
-			infowindow.close();
+	if (largeInfowindow.marker !=marker) {
+		largeInfowindow.marker = marker;
+		largeInfowindow.setContent('<div>' + marker.title + '</div>');
+		largeInfowindow.open(map, marker);
+		largeInfowindow.addListener('closeclick',function(){
+			largeInfowindow.marker = null;
+			largeInfowindow.close();
 		});
 		var streetViewService = new google.maps.StreetViewService();
 		var radius = 50;
@@ -72,7 +74,7 @@ function populateInfoWindow(marker, infowindow) {
 				var nearStreetViewLocation = data.location.latLng;
 				var heading = google.maps.geometry.spherical.computeHeading(
 					nearStreetViewLocation, marker.position);
-					infowindow.setContent('<div>' + marker.title + '</div><div id="pano" class="map-info-window"></div>');
+					largeInfowindow.setContent('<div>' + marker.title + '</div><div id="pano" class="map-info-window"></div>');
 					var panoramaOptions = {
 						position: nearStreetViewLocation,
 						pov: {
@@ -83,12 +85,12 @@ function populateInfoWindow(marker, infowindow) {
 				var panorama = new google.maps.StreetViewPanorama(
 					document.getElementById('pano'), panoramaOptions);
 			} else {
-				infowindow.setContent('div' + marker.title + '</div>' +
+				largeInfowindow.setContent('div' + marker.title + '</div>' +
 					'<div>No Street View Found</div>');
 			}
 		}
 		streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-		infowindow.open(map, marker);
+		largeInfowindow.open(map, marker);
 	}
 }
 
@@ -118,12 +120,12 @@ this.hideUnhide = function() {
 }
 
 var viewModel = function() {
-	this.casinosList = ko.observableArray([]);
+	this.casinosList = ko.observableArray([casinos]);
 	
-	for (var i= 0; i < casinos.length; i++) {
-		var title = casinos[i].title;
-		this.casinosList.push(title);
+	selectClick = function(data,event) {
+		console.log(data);
+		populateInfoWindow(data.marker);
 	}
 }
 
-ko.applybindings(viewModel);
+ko.applyBindings(viewModel);
