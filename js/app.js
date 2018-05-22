@@ -25,7 +25,7 @@ function initMap() {
 		zoom: 13
 	});
 		
-	var largeInfowindow = new google.maps.InfoWindow();
+	largeInfowindow = new google.maps.InfoWindow();
 	var defaultIcon = makeMarkerIcon('0091ff');
 	var highlightedIcon = makeMarkerIcon('FFFF24');
 	var bounds = new google.maps.LatLngBounds();
@@ -120,8 +120,10 @@ this.hideUnhide = function() {
 }
 
 var viewModel = function() {
-	this.casinosList = ko.observableArray([casinos]);
+	this.casinosList = ko.observableArray(casinos);
+	this.searchCasinos = ko.observable("");
 	
+
 	selectClick = function(data,event) {
 		console.log(data);
 		populateInfoWindow(data.marker);
