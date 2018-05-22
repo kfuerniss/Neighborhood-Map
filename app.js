@@ -1,20 +1,20 @@
 var map;
 var markers = [];
 var casinos = [
-	{title: "Mandalay Bay", location: {lat: 36.091958, lng: -115.173114}},
-	{title: "Ballagio", location: {lat: 36.112953, lng: -115.173062}},
-	{title: "Paris Hotel", location: {lat: 36.111634, lng: -115.172817}},
-	{title: "Caesars Palace", location: {lat: 36.117342, lng: -115.173033}},
-	{title: "Stratosphere", location: {lat: 36.146373, lng: -115.155745}},
-	{title: "Luxor", location: {lat: 36.095481, lng: -115.173145}},
-	{title: "Excalibur", location: {lat: 36.099143, lng: -115.173163}},
-	{title: "MGM Grand", location: {lat: 36.100935, lng: -115.172515}},
-	{title: "Hard Rock", location: {lat: 36.108053, lng: -115.153992}},
-	{title: "Planet Hollywood", location: {lat: 36.108141, lng: -115.169908}},
-	{title: "The Venetian", location: {lat: 36.122082, lng: -115.171392}},
-	{title: "Palms", location: {lat: 36.115440, lng: -115.194811}},
-	{title: "Rio", location: {lat: 36.116012, lng: -115.187810}},
-	{title: "The Orleans", location: {lat: 36.101018, lng: -115.201611}}
+	{title: "MANDALAY BAY", location: {lat: 36.091958, lng: -115.173114}},
+	{title: "BALLAGIO", location: {lat: 36.112953, lng: -115.173062}},
+	{title: "PARIS HOTEL", location: {lat: 36.111634, lng: -115.172817}},
+	{title: "CAESARS PALACE", location: {lat: 36.117342, lng: -115.173033}},
+	{title: "STRATOSPHERE", location: {lat: 36.146373, lng: -115.155745}},
+	{title: "LUXOR", location: {lat: 36.095481, lng: -115.173145}},
+	{title: "EXCALIBUR", location: {lat: 36.099143, lng: -115.173163}},
+	{title: "MGM GRAND", location: {lat: 36.100935, lng: -115.172515}},
+	{title: "HARD ROCK", location: {lat: 36.108053, lng: -115.153992}},
+	{title: "PLANET HOLLYWOOD", location: {lat: 36.108141, lng: -115.169908}},
+	{title: "THE VENETIAN", location: {lat: 36.122082, lng: -115.171392}},
+	{title: "PALMS", location: {lat: 36.115440, lng: -115.194811}},
+	{title: "RIO", location: {lat: 36.116012, lng: -115.187810}},
+	{title: "THE ORLEANS", location: {lat: 36.101018, lng: -115.201611}}
 ];
 var largeInfowindow;
 
@@ -119,11 +119,18 @@ this.hideUnhide = function() {
 	}
 }
 
-var viewModel = function() {
-	this.casinosList = ko.observableArray(casinos);
-	this.searchCasinos = ko.observable("");
-	
 
+
+var viewModel = function() {
+	var self = this;
+	self.casinosList = ko.observableArray(casinos);
+	self.searchCasinos = ko.observable("");
+	var results = [];
+	self.filter = ko.computed(function() { 
+		console.log(self.searchCasinos()); 
+		return ko.utils.arrayFilter(casinosList().toUpperCase(), function() {});
+	})
+	
 	selectClick = function(data,event) {
 		console.log(data);
 		populateInfoWindow(data.marker);
