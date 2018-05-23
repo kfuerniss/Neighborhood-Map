@@ -69,14 +69,3 @@ hr {
   .casinoButton {font-size: 10px;}
 }
 
-@media screen and (max-width: 400px) {
-   .containerBox {
-       display: none;
-   } 
-   .casinoButton {
-       display: none;
-   }
-   #hide-unhide {
-       display: none;
-   }
-}
