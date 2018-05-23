@@ -34,7 +34,7 @@ body {
     left: 10px;
     position: relative;
     z-index: 20;
-    height 100%;
+    height: 100%;
     width: 100px;
 }
 
@@ -42,11 +42,20 @@ body {
     background: #e6ffff;
     color: black;
     border: 1px solid #008CBA; 
-    height: 20px;
-    width: 200px;
-    text
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
+h1 {
+    overflow: hidden;
+    text-overflow: clip;  
+}
+
+#searchInput {
+    width: 100%;
+}
 
 hr {
     height: 1px;
@@ -55,7 +64,19 @@ hr {
     border-style: inset;
 }
 
-@media screen and (max-height: 450px) {
-  .container {padding-top: 15px;}
-  #sidebar {font-size: 18px;}
+@media screen and (max-width: 800px) {
+  h1 {font-size: 18px;}
+  .casinoButton {font-size: 10px;}
+}
+
+@media screen and (max-width: 400px) {
+   .containerBox {
+       display: none;
+   } 
+   .casinoButton {
+       display: none;
+   }
+   #hide-unhide {
+       display: none;
+   }
 }
