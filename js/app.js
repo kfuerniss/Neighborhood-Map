@@ -26,10 +26,12 @@ function initMap() {
 	});
 		
 	largeInfowindow = new google.maps.InfoWindow();
+	//creates new Infowindow
 	var defaultIcon = makeMarkerIcon('0091ff');
 	var highlightedIcon = makeMarkerIcon('FFFF24');
 	var bounds = new google.maps.LatLngBounds();
 	for (var i = 0; i < casinos.length; i++) {
+		//loads the casinos into an array
 		var position = casinos[i].location;
 		var title = casinos[i].title;
 		var marker = new google.maps.Marker({
@@ -107,6 +109,7 @@ function makeMarkerIcon(markerColor) {
 }
 
 this.hideUnhide = function() {
+	//Hides and unhides the List box
 	var stuff = document.getElementById("sidebar");
 	var item = document.getElementById("container")
 	if (stuff.style.display === "none") {
@@ -120,13 +123,13 @@ this.hideUnhide = function() {
 }
 
 
-
 var viewModel = function() {
 	var self = this;
 	self.casinosList = ko.observableArray(casinos);
 	self.searchCasinos = ko.observable("");
-	
+		
 	self.filter = ko.computed(function() { 
+		//Filter Casinos by searching
 		var term = self.searchCasinos().toLowerCase();
 		//console.log(term); 
 		return ko.utils.arrayFilter(self.casinosList(), function (item) {
@@ -143,6 +146,7 @@ var viewModel = function() {
 	})
 	
 	selectClick = function(data,event) {
+		//Opens Infowindow when casino is selected from list
 		console.log(data);
 		populateInfoWindow(data.marker);
 	}
