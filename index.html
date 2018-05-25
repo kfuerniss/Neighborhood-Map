@@ -14,7 +14,7 @@
 			</div>
 			<span>Casinos</span>
 			<ul id="casino-list" data-bind="foreach: filter">
-				<li><button class="casinoButton" data-bind="text: $data.title, click: selectClick"></button></li>
+				<li><button id="button" class="casinoButton" data-bind="text: $data.title, click: selectClick, css: {'buttonselected':$data.isselected()}"></button></li>
 			</ul>
 		</div>	
 		<div id="map">
