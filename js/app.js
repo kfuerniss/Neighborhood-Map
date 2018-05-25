@@ -1,20 +1,21 @@
 var map;
 var markers = [];
+var marker;
 var casinos = [
-	{title: "MANDALAY BAY", location: {lat: 36.091958, lng: -115.173114}},
-	{title: "BALLAGIO", location: {lat: 36.112953, lng: -115.173062}},
-	{title: "PARIS HOTEL", location: {lat: 36.111634, lng: -115.172817}},
-	{title: "CAESARS PALACE", location: {lat: 36.117342, lng: -115.173033}},
-	{title: "STRATOSPHERE", location: {lat: 36.146373, lng: -115.155745}},
-	{title: "LUXOR", location: {lat: 36.095481, lng: -115.173145}},
-	{title: "EXCALIBUR", location: {lat: 36.099143, lng: -115.173163}},
-	{title: "MGM GRAND", location: {lat: 36.100935, lng: -115.172515}},
-	{title: "HARD ROCK", location: {lat: 36.108053, lng: -115.153992}},
-	{title: "PLANET HOLLYWOOD", location: {lat: 36.108141, lng: -115.169908}},
-	{title: "THE VENETIAN", location: {lat: 36.122082, lng: -115.171392}},
-	{title: "PALMS", location: {lat: 36.115440, lng: -115.194811}},
-	{title: "RIO", location: {lat: 36.116012, lng: -115.187810}},
-	{title: "THE ORLEANS", location: {lat: 36.101018, lng: -115.201611}}
+	{title: "MANDALAY BAY", location: {lat: 36.091958, lng: -115.173114},isselected: ko.observable(false)},
+	{title: "BALLAGIO", location: {lat: 36.112953, lng: -115.173062},isselected: ko.observable(false)},
+	{title: "PARIS HOTEL", location: {lat: 36.111634, lng: -115.172817},isselected: ko.observable(false)},
+	{title: "CAESARS PALACE", location: {lat: 36.117342, lng: -115.173033},isselected: ko.observable(false)},
+	{title: "STRATOSPHERE", location: {lat: 36.146373, lng: -115.155745},isselected: ko.observable(false)},
+	{title: "LUXOR", location: {lat: 36.095481, lng: -115.173145},isselected: ko.observable(false)},
+	{title: "EXCALIBUR", location: {lat: 36.099143, lng: -115.173163},isselected: ko.observable(false)},
+	{title: "MGM GRAND", location: {lat: 36.100935, lng: -115.172515},isselected: ko.observable(false)},
+	{title: "HARD ROCK", location: {lat: 36.108053, lng: -115.153992},isselected: ko.observable(false)},
+	{title: "PLANET HOLLYWOOD", location: {lat: 36.108141, lng: -115.169908},isselected: ko.observable(false)},
+	{title: "THE VENETIAN", location: {lat: 36.122082, lng: -115.171392},isselected: ko.observable(false)},
+	{title: "PALMS", location: {lat: 36.115440, lng: -115.194811},isselected: ko.observable(false)},
+	{title: "RIO", location: {lat: 36.116012, lng: -115.187810},isselected: ko.observable(false)},
+	{title: "THE ORLEANS", location: {lat: 36.101018, lng: -115.201611},isselected: ko.observable(false)}
 ];
 var largeInfowindow;
 
@@ -34,7 +35,7 @@ function initMap() {
 		//loads the casinos into an array
 		var position = casinos[i].location;
 		var title = casinos[i].title;
-		var marker = new google.maps.Marker({
+		marker = new google.maps.Marker({
 			map: map,
 			position: position,
 			title: title,
@@ -122,9 +123,20 @@ this.hideUnhide = function() {
 	}
 }
 
+toggleBounce = function(marker) {
+	if (marker.getAnimation() !== null) {
+		marker.setAnimation(null);
+	} else {
+		marker.setAnimation(google.maps.Animation.BOUNCE);
+	}
+	window.setTimeout(function() {
+		marker.setAnimation(null);
+	}, 3000);
+}
 
 var viewModel = function() {
 	var self = this;
+	var locationholder;
 	self.casinosList = ko.observableArray(casinos);
 	self.searchCasinos = ko.observable("");
 		
@@ -140,15 +152,18 @@ var viewModel = function() {
 			} 
 			return (isvisible);
 		})
-		
-		
 		return 
 	})
-	
+
 	selectClick = function(data,event) {
 		//Opens Infowindow when casino is selected from list
-		console.log(data);
+		if (locationholder) {
+			locationholder.isselected(false);
+		}
+		locationholder = data;
+		toggleBounce(data.marker);
 		populateInfoWindow(data.marker);
+		data.isselected(true);
 	}
 }
 
