@@ -48,6 +48,10 @@ body {
     text-overflow: ellipsis;
 }
 
+.buttonselected {
+    background: yellow;
+}
+
 h1 {
     overflow: hidden;
     text-overflow: clip;  
@@ -65,7 +69,9 @@ hr {
 }
 
 @media screen and (max-width: 800px) {
-  h1 {font-size: 18px;}
-  .casinoButton {font-size: 10px;}
+    h1 {font-size: 18px;}
+    .casinoButton {font-size: 10px;
+        width: 35%;}
+    .containerBox {width: 35%;}
 }
 
