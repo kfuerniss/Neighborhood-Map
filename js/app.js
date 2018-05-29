@@ -2,20 +2,20 @@ var map;
 var markers = [];
 var marker;
 var casinos = [
-	{title: "MANDALAY BAY", location: {lat: 36.091958, lng: -115.173114},isselected: ko.observable(false)},
-	{title: "BALLAGIO", location: {lat: 36.112953, lng: -115.173062},isselected: ko.observable(false)},
-	{title: "PARIS HOTEL", location: {lat: 36.111634, lng: -115.172817},isselected: ko.observable(false)},
-	{title: "CAESARS PALACE", location: {lat: 36.117342, lng: -115.173033},isselected: ko.observable(false)},
-	{title: "STRATOSPHERE", location: {lat: 36.146373, lng: -115.155745},isselected: ko.observable(false)},
-	{title: "LUXOR", location: {lat: 36.095481, lng: -115.173145},isselected: ko.observable(false)},
-	{title: "EXCALIBUR", location: {lat: 36.099143, lng: -115.173163},isselected: ko.observable(false)},
-	{title: "MGM GRAND", location: {lat: 36.100935, lng: -115.172515},isselected: ko.observable(false)},
-	{title: "HARD ROCK", location: {lat: 36.108053, lng: -115.153992},isselected: ko.observable(false)},
-	{title: "PLANET HOLLYWOOD", location: {lat: 36.108141, lng: -115.169908},isselected: ko.observable(false)},
-	{title: "THE VENETIAN", location: {lat: 36.122082, lng: -115.171392},isselected: ko.observable(false)},
-	{title: "PALMS", location: {lat: 36.115440, lng: -115.194811},isselected: ko.observable(false)},
-	{title: "RIO", location: {lat: 36.116012, lng: -115.187810},isselected: ko.observable(false)},
-	{title: "THE ORLEANS", location: {lat: 36.101018, lng: -115.201611},isselected: ko.observable(false)}
+	{title: "MANDALAY BAY", location: {lat: 36.091958, lng: -115.173114},isselected: ko.observable(false),wiki: "Mandalay_Bay"},
+	{title: "BALLAGIO", location: {lat: 36.112953, lng: -115.173062},isselected: ko.observable(false),wiki: "Bellagio_(resort)"},
+	{title: "PARIS HOTEL", location: {lat: 36.111634, lng: -115.172817},isselected: ko.observable(false), wiki: "Paris_Las_Vegas"},
+	{title: "CAESARS PALACE", location: {lat: 36.117342, lng: -115.173033},isselected: ko.observable(false), wiki: "Caesars_Palace"},
+	{title: "STRATOSPHERE", location: {lat: 36.146373, lng: -115.155745},isselected: ko.observable(false), wiki: "Stratosphere Las Vegas"},
+	{title: "LUXOR", location: {lat: 36.095481, lng: -115.173145},isselected: ko.observable(false), wiki: "Luxor_Las_Vegas"},
+	{title: "EXCALIBUR", location: {lat: 36.099143, lng: -115.173163},isselected: ko.observable(false), wiki: "Excalibur_Hotel_and_Casino"},
+	{title: "MGM GRAND", location: {lat: 36.100935, lng: -115.172515},isselected: ko.observable(false), wiki: "MGM_Grand_Las_Vegas"},
+	{title: "HARD ROCK", location: {lat: 36.108053, lng: -115.153992},isselected: ko.observable(false), wiki: "Hard_Rock_Hotel_and_Casino_(Las_Vegas)"},
+	{title: "PLANET HOLLYWOOD", location: {lat: 36.108141, lng: -115.169908},isselected: ko.observable(false), wiki: "Planet_Hollywood_Las_Vegas"},
+	{title: "THE VENETIAN", location: {lat: 36.122082, lng: -115.171392},isselected: ko.observable(false), wiki: "The_Venetian_Las_Vegas"},
+	{title: "PALMS", location: {lat: 36.115440, lng: -115.194811},isselected: ko.observable(false), wiki: "Palms_Casino_Resort"},
+	{title: "RIO", location: {lat: 36.116012, lng: -115.187810},isselected: ko.observable(false), wiki: "Rio_All_Suite_Hotel_and_Casino"},
+	{title: "THE ORLEANS", location: {lat: 36.101018, lng: -115.201611},isselected: ko.observable(false), wiki: "The_Orleans"}
 ];
 var largeInfowindow;
 
@@ -41,7 +41,8 @@ function initMap() {
 			title: title,
 			icon: defaultIcon,
 			animation: google.maps.Animation.DROP,
-			id: i
+			id: i,
+			wiki: casinos[i].wiki
 		});
 		
 		bounds.extend(marker.position);
@@ -62,38 +63,41 @@ function initMap() {
 function populateInfoWindow(marker) {
 	//populates the info window
 	if (largeInfowindow.marker !=marker) {
-		largeInfowindow.marker = marker;
-		largeInfowindow.setContent('<div>' + marker.title + '</div>');
-		largeInfowindow.open(map, marker);
-		largeInfowindow.addListener('closeclick',function(){
-			largeInfowindow.marker = null;
-			largeInfowindow.close();
-		});
-		var streetViewService = new google.maps.StreetViewService();
-		var radius = 50;
-		function getStreetView(data, status) {
-			//gets the street view for the info window
-			if (status == google.maps.StreetViewStatus.OK) {
-				var nearStreetViewLocation = data.location.latLng;
-				var heading = google.maps.geometry.spherical.computeHeading(
-					nearStreetViewLocation, marker.position);
-					largeInfowindow.setContent('<div>' + marker.title + '</div><div id="pano" class="map-info-window"></div>');
-					var panoramaOptions = {
-						position: nearStreetViewLocation,
-						pov: {
-							heading: heading,
-							pitch: 30
-						}
-					};
-				var panorama = new google.maps.StreetViewPanorama(
-					document.getElementById('pano'), panoramaOptions);
-			} else {
-				largeInfowindow.setContent('div' + marker.title + '</div>' +
-					'<div>No Street View Found</div>');
+		
+		var wikiUrl = 'https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original&titles=' + marker.wiki + 
+			'&origin=*';
+		
+		$.ajax({
+			url: wikiUrl,
+			type: "GET",
+			dataType: "json",
+			success: getWiki,
+			//error:
+			 
+		})
+		
+		function getWiki(data, status) {
+			var pages = data.query.pages;
+			var source = pages[Object.keys(pages)[0]].original.source;
+			//console.log(data.query.pages);
+			
+			largeInfowindow.marker = marker;
+			largeInfowindow.setContent('<div>' + marker.title + '</div>' + '<hr>' + "<div>" + "<img src= " + showImage() + ">" + "<div>");
+			largeInfowindow.addListener('closeclick',function(){
+				largeInfowindow.marker = null;
+				largeInfowindow.close();
+			});
+
+			function showImage(src) {
+				var img = document.createElement("img");
+				img.src = source;
+				img.width = "400px";
+				img.height = "200px";
+				console.log(img.src);
 			}
+			
+			largeInfowindow.open(map, marker);
 		}
-		streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-		largeInfowindow.open(map, marker);
 	}
 }
 
