@@ -72,7 +72,9 @@ function populateInfoWindow(marker) {
 			type: "GET",
 			dataType: "json",
 			success: getWiki,
-			//error:
+			error: function() {
+				console.log('Error: ' + data);
+			}
 			 
 		})
 		
@@ -82,20 +84,13 @@ function populateInfoWindow(marker) {
 			//console.log(data.query.pages);
 			
 			largeInfowindow.marker = marker;
-			largeInfowindow.setContent('<div>' + marker.title + '</div>' + '<hr>' + "<div>" + "<img src= " + showImage() + ">" + "<div>");
+			largeInfowindow.setContent('<div>' + marker.title + '</div>' + '<hr>' + "<div>" + "<img src= " + source + " height=350px, width=400px>" + "<div>");
 			largeInfowindow.addListener('closeclick',function(){
 				largeInfowindow.marker = null;
 				largeInfowindow.close();
 			});
 
-			function showImage(src) {
-				var img = document.createElement("img");
-				img.src = source;
-				img.width = "400px";
-				img.height = "200px";
-				console.log(img.src);
-			}
-			
+					
 			largeInfowindow.open(map, marker);
 		}
 	}
