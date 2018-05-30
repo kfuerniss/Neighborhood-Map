@@ -14,8 +14,7 @@ body {
 }
 
 .map-info-window {
-	width: 200px;
-	height: 200px;
+    font-size: 30px;
 }
 
 .containerBox {
@@ -61,6 +60,11 @@ h1 {
     width: 100%;
 }
 
+#casino-list {
+    list-style: none;
+    padding: 5px;
+}
+
 hr {
     height: 1px;
     margin-right: auto;
@@ -70,8 +74,7 @@ hr {
 
 @media screen and (max-width: 800px) {
     h1 {font-size: 18px;}
-    .casinoButton {font-size: 10px;
-        width: 35%;}
+    .casinoButton {font-size: 10px;}
     .containerBox {width: 35%;}
 }
 
