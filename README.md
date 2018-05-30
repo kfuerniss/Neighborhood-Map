@@ -5,11 +5,13 @@ This map shows the 13 major casinos in Las Vegas. When the casino name or marker
 To run the program oepn the webpage by using the following URL in your browser:
 https://kfuerniss.github.io/Neighborhood-Map/
 
+Or you can clone or download the repo. For more directions on cloning use: https://help.github.com/articles/cloning-a-repository/.
+
 ## Sources and Tools:
 •	Knockout 3.4.0
 •	JQuery
 •	Google Maps
-•	Google Street View
+•	Wikipedia
 
 ## References
 •	https://www.w3schools.com
