@@ -1,5 +1,5 @@
 ## Neihborhood-Map Project 5
-This map shows the 13 major casinos in Las Vegas. When the casino name or marker is selected it opens an infowindow with a streetview. The list is searchable.
+This map shows the 14 major casinos in Las Vegas. When the casino name or marker is selected it opens an infowindow with a picture from Wikipedia. The list is also searchable by using the text box.
 
 ## Getting Started
 To run the program oepn the webpage by using the following URL in your browser:
