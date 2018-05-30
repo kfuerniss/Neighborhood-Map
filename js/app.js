@@ -73,18 +73,18 @@ function populateInfoWindow(marker) {
 			dataType: "json",
 			success: getWiki,
 			error: function() {
-				console.log('Error: ' + data);
+				alert('Wikipedia failed to load');
 			}
 			 
-		})
+		});
 		
 		function getWiki(data, status) {
 			var pages = data.query.pages;
 			var source = pages[Object.keys(pages)[0]].original.source;
-			//console.log(data.query.pages);
 			
 			largeInfowindow.marker = marker;
-			largeInfowindow.setContent('<div>' + marker.title + '</div>' + '<hr>' + "<div>" + "<img src= " + source + " height=350px, width=400px>" + "<div>");
+			largeInfowindow.setContent('<div class="map-info-window">' + marker.title + '</div>' + '<hr>' + '<div>' + '<img src= "' + source +
+				 '" height="350px" width="400px">' + '</div>' + '<div>' + 'Image From Wikipedia: https://en.wikipedia.org/wiki/' + marker.wiki + '</div>');
 			largeInfowindow.addListener('closeclick',function(){
 				largeInfowindow.marker = null;
 				largeInfowindow.close();
@@ -111,7 +111,7 @@ function makeMarkerIcon(markerColor) {
 this.hideUnhide = function() {
 	//Hides and unhides the List box
 	var stuff = document.getElementById("sidebar");
-	var item = document.getElementById("container")
+	var item = document.getElementById("container");
 	if (stuff.style.display === "none") {
 		stuff.style.display = "block";
 		item.style.display = "block";
@@ -120,7 +120,7 @@ this.hideUnhide = function() {
 		stuff.style.display = "none";
 		item.style.display = "none";
 	}
-}
+};
 
 toggleBounce = function(marker) {
 	if (marker.getAnimation() !== null) {
@@ -131,7 +131,7 @@ toggleBounce = function(marker) {
 	window.setTimeout(function() {
 		marker.setAnimation(null);
 	}, 3000);
-}
+};
 
 var viewModel = function() {
 	var self = this;
@@ -142,17 +142,14 @@ var viewModel = function() {
 	self.filter = ko.computed(function() { 
 		//Filter Casinos by searching
 		var term = self.searchCasinos().toLowerCase();
-		//console.log(term); 
 		return ko.utils.arrayFilter(self.casinosList(), function (item) {
 			var isvisible =  item.title.toLowerCase().startsWith(term);
-			//console.log(item);
 			if (item.marker) {
 				item.marker.setVisible(isvisible);
 			} 
 			return (isvisible);
-		})
-		return 
-	})
+		});
+	});
 
 	selectClick = function(data,event) {
 		//Opens Infowindow when casino is selected from list
@@ -163,7 +160,11 @@ var viewModel = function() {
 		toggleBounce(data.marker);
 		populateInfoWindow(data.marker);
 		data.isselected(true);
-	}
+	};
+};
+
+function GoogleError() {
+	alert('GoogleMaps did not load. Please try again.');
 }
 
 ko.applyBindings(viewModel);
