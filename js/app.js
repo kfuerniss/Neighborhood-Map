@@ -55,6 +55,9 @@ function initMap() {
 		marker.addListener('mouseout', function() {
 			this.setIcon(defaultIcon);
 		});
+		marker.addListener('click', function() {
+			toggleBounce(this);
+		});
 		casinos[i].marker = marker;
 	}
 	map.fitBounds(bounds);
