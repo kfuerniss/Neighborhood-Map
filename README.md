@@ -7,6 +7,8 @@ https://kfuerniss.github.io/Neighborhood-Map/
 
 Or you can clone or download the repo. For more directions on cloning use: https://help.github.com/articles/cloning-a-repository/.
 
+After the repo has been cloned you can open the index.html file in a browser to access the application.
+
 ## Sources and Tools:
 •	Knockout 3.4.0
 •	JQuery
